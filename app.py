@@ -45,3 +45,33 @@ def welcome():
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs"
     )
+
+@app.route('/api/v1.0/precipitation')
+def prcp():
+    # Query measurement for dates and prcps
+    date_prcp = session.query(measurement.date, measurement.prcp)
+    session.close()
+
+    # Create dict for dates & prcps
+    dps = []
+    for date, prcp in date_prcp:
+        dp_dict = {}
+        dp_dict[date] = prcp
+        dps.append(dp_dict)
+
+    return jsonify(dps)
+    
+@app.route('/api/v1.0/stations')
+def stations():
+    # Query stations
+    station_list = []
+    stations = session.query(station.station)
+    session.close()
+
+    for station in stations:
+        station_list.append(station)
+    
+    return(station_list)
+
+'''@app.route('/api/v1.0/tobs')
+def tobs():'''
